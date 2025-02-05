@@ -1,7 +1,7 @@
 
-let productsHTML='';
+let productsHTML=''; // Start with an empty string to store all product HTML.
 
-products.forEach((product) => {
+products.forEach((product) => {  // For each product in the products array:
   productsHTML += `
     <div class="product-container">
       <div class="product-image-container">
@@ -47,23 +47,28 @@ products.forEach((product) => {
 });
 
 //console.log(productsHTML);
+// Put all the product HTML into the page inside the grid.
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
-  button.addEventListener('click',()=>{
-    const productId=button.dataset.productId;
-    let matchingItem;
-    cart.forEach((item)=>{
+document.querySelectorAll('.js-add-to-cart').forEach((button)=>{ // Find all "Add to Cart" buttons.
+  button.addEventListener('click',()=>{ // When a button is clicked:
+    const productId=button.dataset.productId; // Get the ID of the product from the button.
+    const productContainer = button.closest('.product-container');
+    const quantitySelect = productContainer.querySelector('select');
+    const selectedQuantity = parseInt(quantitySelect.value, 10); 
+    let matchingItem=cart.find((item)=>item.productId==productId); // A place to store the matching product in the cart.
+
+    cart.forEach((item)=>{// Check if this product is already in the cart:
       if(productId===item.productId){
-        matchingItem = item;
+        matchingItem = item; // If found, store that item.
       }
     });
     if(matchingItem){
-      matchingItem.quantity += 1;
+      matchingItem.quantity += selectedQuantity;
     }else{
     cart.push({
       productId: productId,
-      quantity: 1
+      quantity: selectedQuantity
     });
   }
   let cartquantity=0;
