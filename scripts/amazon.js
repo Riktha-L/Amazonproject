@@ -1,4 +1,4 @@
-
+import{cart} from '../data/cart.js';
 let productsHTML=''; // Start with an empty string to store all product HTML.
 
 products.forEach((product) => {  // For each product in the products array:
@@ -60,7 +60,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{ // Find all "Ad
 
     cart.forEach((item)=>{// Check if this product is already in the cart:
       if(productId===item.productId){
-        matchingItem = item; // If found, store that item.
+        matchingItem = item;
       }
     });
     if(matchingItem){
