@@ -91,6 +91,14 @@ cart.forEach((cartItem)=>{
 });
 //console.log(cartSummaryHTML)
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+updateCheckoutQuantity();
+function updateCheckoutQuantity(){
+  let cartcheckoutqt=0;
+  cart.forEach((cartItem)=>{
+    cartcheckoutqt+=cartItem.quantity;
+  });
+  document.querySelector('.js-cart-quantity-checkout').innerHTML=cartcheckoutqt;
+}
 document.querySelectorAll('.js-delete-link').forEach((link)=>{
   link.addEventListener('click',()=>{
     //console.log('delete');
@@ -101,5 +109,6 @@ document.querySelectorAll('.js-delete-link').forEach((link)=>{
    const container=document.querySelector(`.js-cart-item-container-${productId}`)
    //console.log(container)
    container.remove();
+   updateCheckoutQuantity();
   });
 })
