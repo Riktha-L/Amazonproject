@@ -3,13 +3,12 @@ if(!cart){
   cart=[
     {
       productId:'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
-      quantity:1
+      quantity:1,
+      deliveryOptionId:'1'
     },{
       productId:"bc2847e9-5323-403f-b7cf-57fde044a955",
-      quantity:2
-    },{
-      productId:"aaa65ef3-8d6f-4eb3-bc9b-a6ea49047d8f",
-      quantity:3
+      quantity:1,
+      deliveryOptionId:"2"
     }
   ];
 }
@@ -32,7 +31,8 @@ export function addtocart(productId, selectedQuantity){
   } else {
     cart.push({
       productId: productId,
-      quantity: selectedQuantity
+      quantity: selectedQuantity,
+      deliveryOptionId:'1'
     });
   }
   savetoStorage();
