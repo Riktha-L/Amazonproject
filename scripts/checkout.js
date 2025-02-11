@@ -4,6 +4,33 @@ import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 
+let orderSummary={
+  items:0,
+  productCost:0,
+  shippingCost:0,
+  totalBeforeTax:0,
+  tax:0,
+  totalCost:0,
+};
+function calculateProductCosts(){
+  orderSummary.productCost=0;
+  cart.forEach((cartItem)=>{
+    const product=products.find(p=>p.id===cartItem.productId);
+    orderSummary.productCost+=product.priceCents*cartItem.quantity;
+  })
+  orderSummary.items=cart.reduce((total,item)=>total+item.quantity,0);
+}
+function updateOrderSummary(){
+  orderSummary.totalBeforeTax = orderSummary.productCost + orderSummary.shippingCost;
+  orderSummary.tax = Math.round(orderSummary.totalBeforeTax * 0.1);
+  orderSummary.totalCost = orderSummary.totalBeforeTax + orderSummary.tax;
+  document.querySelector('.js-item-quantity').innerHTML = orderSummary.items;
+  document.querySelector('.js-items-cost').innerHTML = `$${formatCurrency(orderSummary.productCost)}`;
+  document.querySelector('.js-shipping-cost').innerHTML = `$${formatCurrency(orderSummary.shippingCost)}`;
+  document.querySelector('.js-total-before-tax').innerHTML = `$${formatCurrency(orderSummary.totalBeforeTax)}`;
+  document.querySelector('.js-tax').innerHTML = `$${formatCurrency(orderSummary.tax)}`; // Add this line
+  document.querySelector('.js-total-cost').innerHTML = `$${formatCurrency(orderSummary.totalCost)}`;
+}
 let cartSummaryHTML = "";
 
 // Use find instead of forEach for better product matching
@@ -91,9 +118,11 @@ function deliveryOptionsHTML(matchingProduct) {
 
 // Initialize the page
 function initializePage() {
+  calculateProductCosts();
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
   updateCheckoutQuantity();
   setupEventListeners();
+  updateOrderSummary();
 }
 
 function updateCheckoutQuantity() {
@@ -111,6 +140,8 @@ function setupEventListeners() {
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
       if (container) {
         container.remove();
+        calculateProductCosts(); 
+        updateOrderSummary();
         updateCheckoutQuantity();
       }
     });
@@ -125,6 +156,10 @@ function setupEventListeners() {
       const dateString = deliveryDate.format('dddd, MMMM D');
       
       document.querySelector(`.js-delivery-date-${productId}`).textContent = dateString;
+
+      const selectedOption = deliveryOptions.find(option => option.deliveryDays === deliveryDays);
+      orderSummary.shippingCost = selectedOption.priceCents;
+      updateOrderSummary();
     });
   });
 }
