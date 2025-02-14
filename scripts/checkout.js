@@ -164,5 +164,35 @@ function setupEventListeners() {
   });
 }
 
+// Add this to your checkout.js file
+
+// Import the required functions
+import { addOrder } from './orders.js';
+
+function handlePlaceOrder() {
+  // Get the cart items and create orders
+  cart.forEach((cartItem) => {
+    addOrder(cartItem.productId, cartItem.quantity);
+  });
+
+  // Clear the cart
+  cart.length = 0;
+  
+  // Save empty cart to localStorage (if you're using localStorage)
+  localStorage.setItem('cart', JSON.stringify(cart));
+  
+  // Redirect to orders page
+  window.location.href = 'orders.html';
+}
+
+// Add event listener to the Place Order button
+document.querySelector('.place-order-button').addEventListener('click', () => {
+  if (cart.length === 0) {
+    alert('Your cart is empty!');
+    return;
+  }
+  
+  handlePlaceOrder();
+});
 // Start the page initialization
 initializePage();
