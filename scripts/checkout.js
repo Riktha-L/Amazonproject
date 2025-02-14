@@ -3,7 +3,7 @@ import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
-
+import '../data/cart-oops.js'
 let orderSummary={
   items:0,
   productCost:0,
