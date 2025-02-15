@@ -125,9 +125,13 @@ function generateOrdersPage() {
   }
 
   let ordersHTML = '';
+
   // Sort orders by date (most recent first)
   orders.sort((a, b) => dayjs(b.orderDate).unix() - dayjs(a.orderDate).unix());
-  
+
+  // Reverse the array to ensure newest orders are at the top
+  orders.reverse(); // Add this line to reverse the sorted array
+
   orders.forEach(order => {
     ordersHTML += generateOrderHTML(order);
   });
