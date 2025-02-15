@@ -164,15 +164,17 @@ function setupEventListeners() {
   });
 }
 
-// Add this to your checkout.js file
-
 // Import the required functions
 import { addOrder } from './orders.js';
 
 function handlePlaceOrder() {
   // Get the cart items and create orders
   cart.forEach((cartItem) => {
-    addOrder(cartItem.productId, cartItem.quantity);
+    const selectedDeliveryOption = document.querySelector(`input[name="delivery-option-${cartItem.productId}"]:checked`);
+    const deliveryDays = parseInt(selectedDeliveryOption.dataset.deliveryDays);
+    const deliveryDate = dayjs().add(deliveryDays, 'days').format('YYYY-MM-DD');
+    
+    addOrder(cartItem.productId, cartItem.quantity, deliveryDate);
   });
 
   // Clear the cart
@@ -189,6 +191,16 @@ function handlePlaceOrder() {
 document.querySelector('.place-order-button').addEventListener('click', () => {
   if (cart.length === 0) {
     alert('Your cart is empty!');
+    return;
+  }
+  
+  handlePlaceOrder();
+});
+
+// Add event listener to the Place Order button
+document.querySelector('.place-order-button').addEventListener('click', () => {
+  if (cart.length === 0) {
+    //alert('Your cart is empty!');
     return;
   }
   

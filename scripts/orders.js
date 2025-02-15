@@ -16,7 +16,7 @@ function saveOrders(orders) {
 }
 
 // Add a new order
-export function addOrder(productId, quantity = 1) {
+export function addOrder(productId, quantity = 1, deliveryDate) {
   const product = products.find(p => p.id === productId);
   if (!product) return;
 
@@ -29,7 +29,7 @@ export function addOrder(productId, quantity = 1) {
     items: [{
       productId: productId,
       quantity: quantity,
-      deliveryDate: dayjs().add(5, 'days').format('YYYY-MM-DD') // Example: 5 days delivery
+      deliveryDate: deliveryDate // Use the passed delivery date
     }]
   };
 
